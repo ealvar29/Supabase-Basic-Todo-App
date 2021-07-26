@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@supabase/supabase-js";
+import { supabase } from "../lib/initSupabase";
 
 export default function Todos({ user }) {
   const [todos, setTodos] = useState([]);
@@ -46,14 +46,20 @@ export default function Todos({ user }) {
         <input
           className="w-full p-2 rounded"
           type="text"
-          placeholder="make coffee"
+          placeholder="Add Todo Item!"
           value={newTaskText}
           onChange={(e) => {
             setError("");
             setNewTaskText(e.target.value);
           }}
         />
-        <button className="btn-black" onClick={() => addTodo(newTaskText)}>
+        <button
+          className="btn-black"
+          onClick={() => {
+            addTodo(newTaskText);
+            setNewTaskText("");
+          }}
+        >
           Add
         </button>
       </div>
