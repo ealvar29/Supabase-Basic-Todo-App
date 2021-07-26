@@ -3,12 +3,12 @@ import { supabase } from "@supabase/supabase-js";
 
 export default function Todos({ user }) {
   const [todos, setTodos] = useState([]);
-  const [newTask, setNewTask] = useState("");
+  const [newTaskText, setNewTaskText] = useState("");
   const [errorText, setError] = useState("");
 
   useEffect(() => {
     fetchTodos();
-  });
+  }, []);
 
   const fetchTodos = async () => {
     let { data: todos, error } = await supabase
@@ -18,7 +18,6 @@ export default function Todos({ user }) {
     if (error) console.log("error", error);
     else setTodos(todos);
   };
-
   const addTodo = async (taskText) => {
     let task = taskText.trim();
     if (task.length) {
@@ -39,21 +38,22 @@ export default function Todos({ user }) {
       console.log("error", error);
     }
   };
+
   return (
     <div className="w-full">
-      <h1 className="mb-12">Todo List</h1>
+      <h1 className="mb-12">Todo List.</h1>
       <div className="flex gap-2 my-2">
         <input
           className="w-full p-2 rounded"
           type="text"
           placeholder="make coffee"
-          value={newTask}
+          value={newTaskText}
           onChange={(e) => {
             setError("");
-            setNewTask(e.target.value);
+            setNewTaskText(e.target.value);
           }}
         />
-        <button className="btn-black" onClick={() => addTodo(newTask)}>
+        <button className="btn-black" onClick={() => addTodo(newTaskText)}>
           Add
         </button>
       </div>
@@ -74,7 +74,7 @@ export default function Todos({ user }) {
 }
 
 const Todo = ({ todo, onDelete }) => {
-  const [isCompleted, setCompleted] = useState(todo.is_complete);
+  const [isCompleted, setIsCompleted] = useState(todo.is_complete);
 
   const toggle = async () => {
     try {
@@ -86,7 +86,7 @@ const Todo = ({ todo, onDelete }) => {
       if (error) {
         throw new Error(error);
       }
-      setCompleted(data.is_complete);
+      setIsCompleted(data.is_complete);
     } catch (error) {
       console.log("error", error);
     }
@@ -111,7 +111,7 @@ const Todo = ({ todo, onDelete }) => {
             className="cursor-pointer"
             onChange={(e) => toggle()}
             type="checkbox"
-            check={isCompleted ? true : ""}
+            checked={isCompleted ? true : ""}
           />
         </div>
         <button
@@ -120,6 +120,7 @@ const Todo = ({ todo, onDelete }) => {
             e.stopPropagation();
             onDelete();
           }}
+          className="w-4 h-4 ml-2 border-2 rounded hover:border-black"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

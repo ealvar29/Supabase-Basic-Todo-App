@@ -1,9 +1,10 @@
-import { supabase } from "@supabase/supabase-js";
+import { supabase } from "../lib/initSupabase";
 import { Auth } from "@supabase/ui";
 import TodoList from "../components/TodoList";
 
-export default function Home() {
+export default function IndexPage() {
   const { user } = Auth.useUser();
+
   return (
     <div className="w-full h-full bg-gray-300">
       {!user ? (
@@ -28,7 +29,7 @@ export default function Home() {
               if (error) console.log("Error logging out:", error.message);
             }}
           >
-            Log out
+            Logout
           </button>
         </div>
       )}
